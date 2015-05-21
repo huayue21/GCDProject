@@ -1,4 +1,6 @@
-# Data collection
+#CodeBook for a Tidy Human Activity Dataset
+
+## Data collection
 
 The original data is collected by the team of orge L. Reyes-Ortiz, Davide Anguita, Alessandro Ghio, Luca Oneto from Smartlab - Non Linear Complex Systems Laboratory of Università degli Studi di Genova, Italy.
 
@@ -17,7 +19,7 @@ Here is a table of the labels for the six activity types.
 
 70% of the data was randomly selected as the training data and the rest 30% was used as test data. 
 
-# Overview of features in the original data
+## Overview of features in the original data
 
 For each record, a 561-feature vector is provided as sensor data together with its activity label and subject identifier. 
 
@@ -73,7 +75,7 @@ These are used in angle() variables:
 - tBodyGyroMean
 - tBodyGyroJerkMean
 
-# Data Transformation
+## Data Transformation
 
 Based on the requirement, we merged the training data and the test data to get the full data set.
 
@@ -93,7 +95,7 @@ To make the user better understand the data set, we enhanced the variable descri
 - '-mean()' is repalced by 'mean'
 - '-std()' is repalced by 'std'
 
-# Tidy Data Information
+## Tidy Data Information
 
 After these transformations, the variable names are all self-explaintory.
 Here are table for the abbraviations:
