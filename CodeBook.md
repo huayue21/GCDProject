@@ -1,10 +1,12 @@
-#CodeBook for a Tidy Human Activity Dataset
+#CodeBook for the Tidy Human Activity Dataset
 
-## Data collection
+## Information about the Original Dataset
 
-The original data is collected by the team of orge L. Reyes-Ortiz, Davide Anguita, Alessandro Ghio, Luca Oneto from Smartlab - Non Linear Complex Systems Laboratory of Università degli Studi di Genova, Italy.
+This section is based on the description in [1]. 
 
-30 subjects labeled with ID 1-30 within 19-48 ages have joined the experiments. Each volunteer performed six activities wearing a smartphone (Samsung Galaxy S II) on the waist. In the experiments, three-axial linear acceleration and three-axial angular velocity singals are collected at a constant rate of 50Hz using the embedded accelerometer and gyroscope in the smartphone. The activity types of all the data are then labeled manually based on video records. 
+The *Human Activity Recognition Using Smartphones* Data Set can be found in the UCI Machine Learning Repository.The original data is collected by the team of orge L. Reyes-Ortiz, Davide Anguita, Alessandro Ghio, Luca Oneto from Smartlab - Non Linear Complex Systems Laboratory of Università degli Studi di Genova, Italy.
+
+Thirty volunteers( or subjects) labeled with ID 1 to 30 within 19 to 48 ages have joined the experiments. Each volunteer performed six activities wearing a smartphone (Samsung Galaxy S II) on the waist. In the experiments, three-axial linear acceleration and three-axial angular velocity singals are collected at a constant rate of 50Hz using the embedded accelerometer and gyroscope in the smartphone. The activity types of all the data are then labeled manually based on video records. 
 
 Here is a table of the labels for the six activity types.
 
@@ -19,13 +21,18 @@ Here is a table of the labels for the six activity types.
 
 70% of the data was randomly selected as the training data and the rest 30% was used as test data. 
 
-## Overview of features in the original data
+## Overview of Features in the Original Dataset
 
-For each record, a 561-feature vector is provided as sensor data together with its activity label and subject identifier. 
+This is an overview of the features in the original data set, the understanding of which is crucial for our data extraction and cleaning. The following summary is based on the feature-info.txt included in the dataset[1].
 
-The following are the time domain signals used to derive the 561 features. The prefix 't' in the variable name denotes time domain. All the singals come from the accelerometer and gyroscope 3-axial raw time domain signals tAcc-XYZ and tGyro-XYZ. Here Acc stands for accelaration, Gyro stands for gyroscope and Mag stands for magnitude.
+For each observation in the original dataset, a 561-feature vector is provided as sensor data together with its activity label and subject identifier. 
 
-| X,Y,Z Components of 3D time domain variable    |      Magnitude      |
+The signals used to estimate the feature vectors can be divided into two categories: time-domain and frequency-domain.  
+  
+  
+In the following table are the ten time domain signals. The prefix 't' in the variable name denotes time domain. All the singals come from the accelerometer and gyroscope 3-axial raw time domain signals tAcc-XYZ and tGyro-XYZ. Here *Acc* stands for accelaration, *Gyro* stands for gyroscope and *Mag* stands for magnitude.
+
+| X,Y,Z Components of 3D Time Domain Signal    |      Magnitude      |
 |:----------:|:-------------|
 |tBodyAcc-X,Y,Z|tBodyAccMag|
 |tGravityAcc-X,Y,Z|tGravityAccMag|
@@ -33,11 +40,9 @@ The following are the time domain signals used to derive the 561 features. The p
 |tBodyAccJerk-X,Y,Z|tBodyAccJerkMag|
 |tBodyGyroJerk-X,Y,Z|tBodyGyroJerkMag|
 
-The acceleration signal was separated into body and gravity acceleration signals (tBodyAcc-X,Y,Z and tGravityAcc-X,Y,Z) . The body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-X,Y,Z and tBodyGyroJerk-X,Y,Z). 
+The acceleration signal is separated into *body* and *gravity* acceleration signals (in the table shown as tBodyAcc-X,Y,Z and tGravityAcc-X,Y,Z) . The body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-X,Y,Z and tBodyGyroJerk-X,Y,Z). The magnitude of these three-dimensional signals were calculated (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag). 
 
-The magnitude of these three-dimensional signals were calculated (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag). 
-
-Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. ('f' stands for frequency domain). 
+Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Here the prefix 'f' stands for frequency domain). Here is a table of all the seven frequency-domain variables.
 
 | X,Y,Z Components of 3D Freqency domain variable  |      Magnitude      |
 |:----------:|:-------------|
@@ -46,7 +51,7 @@ Fast Fourier Transform (FFT) was applied to some of these signals producing fBod
 |fBodyGyro-XYZ|fBodyGyroMag|
 ||fBodyGyroJerkMag|
 
-The statistical variables derived from the above 17 signals are listed as below. Among them we are interested in the mean value and the standard deviation of each measurement.
+The statistical and angle variables derived from the above 17 signals are listed as below. Among them we are interested in the mean value and the standard deviation of each measurement only.
 
 | statistics   |      Explanation      |
 |:----------:|:-------------|
@@ -77,14 +82,17 @@ These are used in angle() variables:
 
 ## Data Transformation
 
-Based on the requirement, we merged the training data and the test data to get the full data set.
+Based on the requirement of the project, we first merged the training data and the test data to get the full data set.
 
-The variables choosed for the tidy data set are:
-- 66 out of 561 features that are means and standard deviations of measurements
-- activity types
-- subject ID
+The variables chosen for the tidy data set are:
+- 66 out of 561 features that are means and standard deviations of measurements;
+- activity types;
+- subject ID.
 
-To make the user better understand the data set, we enhanced the variable description by changing the name of the variables.
+We only extract the means and standard deviations of measurements, i.e. only 66 out of 561 features are extracted.   
+As required, the activity IDs' in the original data set are transformed to activity names to make them look more evident.  
+To make the user better understand the data set, we enhanced the variable description by changing the name of the variables through the following string operations on the variable name list,
+
 - the prefix 't' is replaced by 'time.'
 - the prefix 'f' is replaced by 'freq.'
 - 'ACC' is repalced by 'ACC.'
@@ -95,19 +103,23 @@ To make the user better understand the data set, we enhanced the variable descri
 - '-mean()' is repalced by 'mean'
 - '-std()' is repalced by 'std'
 
+
+
 ## Tidy Data Information
 
-After these transformations, the variable names are all self-explaintory.
-Here are table for the abbraviations:
+After the variable name transformations, the variable names are all self-explanatory.  
+Here is the table for the abbreviations used in the variable name:
 
-| Acronym   |      Explanation      |
+| Abbreviation   |      Explanation      |
 |:----------:|:-------------|
-|ACC|accelaration|
+|Acc|accelaration|
 |Gyro|gyroscopic measurement|
 |std|standard deviation|
 |Mag|Magnitude|
 
-For instance, 'time.Gravity.Acc.mean.X' is the name for a time domain variable that measure the X-component value of the mean gravity acccelaration 3D vector.
+For instance, *time.Gravity.Acc.mean.X* is the name for a time domain variable that measure the X-component value of the mean gravity acceleration 3D vector.  
+
+Here is the full list of all the variables in the tidy dataset. You can infer the meaning of the variable names readily as shown in the instance. 
 
  [1] "time.Body.Acc.mean.X"        
  [2] "time.Body.Acc.mean.Y"        
@@ -178,5 +190,21 @@ For instance, 'time.Gravity.Acc.mean.X' is the name for a time domain variable t
 [67] "activity"  
 [68] "subject.id"
 
-We also use descriptive activity names to name the activities in the data set.
+Here is the values used for the `activity` variable.
 
+| Activity|
+|:-------------|
+|  WALKING |
+|  WALKING_UPSTAIRS|
+| WALKING_DOWNSTAIRS |
+| SITTING|
+| STANDING|
+| LAYING|
+
+The subject.id variable values in the range [1,30].
+
+From the dataset generated as described above, we generate one more dataset of 180 rows with the average of each variable for each activity and each subject.
+
+## References
+
+[1] [Human Activity Recognition Using Smartphones Data Set](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones) . Last Retrieved on 05/23/2015.
